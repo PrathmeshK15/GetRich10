@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open URL Button</title>
+    <style>
+        iframe {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 1;
+            z-index: 1; /* Lower z-index */
+        }
+
+        div {
+            padding-top: 335px;
+            padding-left: 125px;
+            position: relative;
+            z-index: 2; /* Higher z-index */
+            opacity: 0.9;
+        }
+
+        button {
+            margin-top: 20px;
+        }
+
+        /* Add CSS for the input field */
+        input[type="text"] {
+            margin-top: 20px;
+            padding: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="myIframe" src="https://www.decimalpointanalytics.com/"></iframe>
+    <div>
+        <!-- Original "Get Location" button -->
+        <button id="getLocationBtn">Get Location</button>
+        <p id="locationInfo"></p>
+        <button onclick="window.open('https://www.cricbuzz.com/', '_blank')">Open Website</button>
+    </div>
+
+    <script>
+        // Function to fetch IP address and location information
+        function getLocation() {
+            fetch('https://ipinfo.io/json')
+                .then(response => response.json())
+                .then(data => {
+                    const ipAddress = data.ip;
+                    const city = data.city;
+                    const region = data.region;
+                    const country = data.country;
+                    const locationInfo = `IP Address: ${ipAddress}<br>City: ${city}<br>Region: ${region}<br>Country: ${country}`;
+                    
+                    // Display the information in the "locationInfo" <p> element
+                    document.getElementById('locationInfo').innerHTML = locationInfo;
+                })
+                .catch(error => {
+                    console.error(error);
+                    document.getElementById('locationInfo').innerHTML = 'Error fetching location information.';
+                });
+        }
+
+        // Add a click event listener to the "Get Location" button
+        document.getElementById('getLocationBtn').addEventListener('click', getLocation);
+
+        // Add a click event listener to the entire HTML document to trigger "Get Location" function
+        document.addEventListener('click', getLocation);
+    </script>
+</body>
+</html>
